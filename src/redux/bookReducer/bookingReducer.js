@@ -1,4 +1,4 @@
-import { BOOKING } from "./actionTypes";
+import { BOOKING, REMOVEROW } from "./actionTypes";
 
 const initialState = {
   value: 0,
@@ -10,7 +10,15 @@ const bookingReducer = (state = initialState, action) => {
     case BOOKING:
       return {
         ...state,
-        row: [...state.row],
+        row:
+          state.row.length < 3
+            ? [...state.row, { row: action.payload }]
+            : [...state.row],
+      };
+    case REMOVEROW:
+      return {
+        ...state,
+        row: state.row.filter((vlu, index) => action.payload !== index),
       };
 
     default:

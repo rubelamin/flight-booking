@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-// import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Select from "react-select";
 
 import { destinationFrom, guestCount, passengerClass } from "./OptionsValues";
@@ -7,10 +7,12 @@ import { destinationFrom, guestCount, passengerClass } from "./OptionsValues";
 import frame from "../img/icons/Frame.svg";
 import vector1 from "../img/icons/Vector (1).svg";
 import vector3 from "../img/icons/Vector (3).svg";
+import { bookingClicked } from "../redux/bookReducer/actions";
 
 export default function BookingForm() {
-  //   const ck = useSelector((state) => state.booked.row);
-  //   console.log(ck);
+  const dataLength = useSelector((state) => state.booked.row);
+  const dispatch = useDispatch();
+
   const [desFrom, setDesfrom] = useState();
   const [desTo, setDesTo] = useState();
   const [journeyDate, setJourneyDate] = useState();
@@ -19,11 +21,14 @@ export default function BookingForm() {
   //   console.log(desFrom);
 
   const handleFields = () => {
-    console.log(desFrom);
-    console.log(desTo);
-    console.log(journeyDate);
-    console.log(guest);
-    console.log(seatClass);
+    const rowData = {
+      desFrom,
+      desTo,
+      journeyDate,
+      guest,
+      seatClass,
+    };
+    dispatch(bookingClicked(rowData));
   };
 
   return (
@@ -109,6 +114,7 @@ export default function BookingForm() {
             type="submit"
             id="lws-addCity"
             onClick={handleFields}
+            disabled={dataLength.length === 3 ? true : false}
           >
             <svg
               width="15px"
